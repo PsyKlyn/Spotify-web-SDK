@@ -19,6 +19,13 @@ A modern Liquid Glass Spotify music player built with vanilla JavaScript, Spotif
 
 ##  Preview
 
+| Login | Search |
+|--------|--------|
+| ![](assets/login.png) | ![](assets/search.png) |
+
+| Music Player | Dynamic Colors |
+|--------|--------|
+| ![](assets/song1.png) | ![](assets/song2.png) |
 <img width="100%" src="preview.png">
 
 ---
