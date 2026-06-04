@@ -1,8 +1,8 @@
 
 // SPOTIFY CONFIG
 
-const CLIENT_ID = "be936e0d36cf4bf7a4bbcb9bf70b1a77";
-const REDIRECT_URI = "https://imaginative-yeot-5c2ec6.netlify.app/";
+const CLIENT_ID = "YOUR_SPOTIFY_CLIENT_ID";
+const REDIRECT_URI = "YOUR_NETLIFY_LINKS";
 const SCOPES = [
     "streaming",
     "user-read-email",
