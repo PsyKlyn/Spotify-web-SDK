@@ -1,4 +1,4 @@
-#  QUE_EDS Music Player
+#  QUE_UEDS Music Player
 
 A modern Liquid Glass Spotify music player built with vanilla JavaScript, Spotify Web Playback SDK, dynamic album color extraction, synchronized lyrics, and a glassmorphism-inspired UI.
 
