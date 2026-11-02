@@ -1023,3 +1023,92 @@ body {
     letter-spacing: 0.5px;
 }
 
+/* Responsive layout fixes for the player and fixed queue panel */
+@media (max-width: 1200px) {
+    .queue-panel {
+        width: min(340px, calc(100vw - 32px));
+        right: 16px;
+        padding: 20px;
+    }
+
+    .carousel {
+        width: min(620px, calc(100vw - 380px));
+    }
+}
+
+@media (max-width: 900px) {
+    .queue-panel {
+        position: relative;
+        top: auto;
+        right: auto;
+        transform: none;
+        width: min(100%, 620px);
+        max-height: 42vh;
+        margin: 24px auto;
+    }
+
+    .queue-panel:hover {
+        transform: none;
+    }
+
+    .carousel {
+        width: min(100%, 620px);
+        height: 300px;
+    }
+
+    .card {
+        width: min(200px, 42vw);
+        height: 230px;
+    }
+
+    .card.left {
+        transform: translateX(-145px) rotateY(30deg) scale(.88);
+    }
+
+    .card.left:hover {
+        transform: translateX(-145px) rotateY(30deg) scale(.89);
+    }
+
+    .card.right {
+        transform: translateX(145px) rotateY(-30deg) scale(.88);
+    }
+
+    .card.right:hover {
+        transform: translateX(145px) rotateY(-30deg) scale(.89);
+    }
+}
+
+@media (max-width: 560px) {
+    .carousel {
+        height: 250px;
+        perspective: 900px;
+    }
+
+    .card {
+        width: 155px;
+        height: 190px;
+        border-radius: 20px;
+    }
+
+    .card.left {
+        transform: translateX(-105px) rotateY(28deg) scale(.82);
+    }
+
+    .card.left:hover {
+        transform: translateX(-105px) rotateY(28deg) scale(.83);
+    }
+
+    .card.right {
+        transform: translateX(105px) rotateY(-28deg) scale(.82);
+    }
+
+    .card.right:hover {
+        transform: translateX(105px) rotateY(-28deg) scale(.83);
+    }
+
+    .queue-panel {
+        padding: 16px;
+        border-radius: 22px;
+        max-height: 38vh;
+    }
+}
