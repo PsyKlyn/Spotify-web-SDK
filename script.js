@@ -1,8 +1,8 @@
 
 // SPOTIFY CONFIG
 
-const CLIENT_ID = "YOUR_SPOTIFY_CLIENT_ID";
-const REDIRECT_URI = "YOUR_NETLIFY_LINKS";
+const CLIENT_ID = "444ffc8623ac4e0f890787e960e4c040";
+const REDIRECT_URI = "https://imaginative-yeot-5c2ec6.netlify.app";
 const SCOPES = [
     "streaming",
     "user-read-email",
@@ -236,8 +236,9 @@ function initSpotifyPlayer() {
         if (!state) return;
         isPlaying = !state.paused;
         currentPosition = state.position;
-        updateCurrentLyric();
         currentDuration = state.duration;
+        // Lyrics/progress depend on the current track duration and position.
+        updateCurrentLyric();
 
         icon.classList.toggle("fa-play", state.paused);
         icon.classList.toggle("fa-pause", !state.paused);
@@ -725,18 +726,35 @@ async function seek(e) {
 // CAROUSEL
 
 function initCarousel() {
-    for (let i = 0; i < 3; i++) {
-        const card = document.createElement("div");
-        card.className = "card";
-        card.innerHTML = '<img crossOrigin="anonymous">';
-        carousel.appendChild(card);
-        cardElements.push(card);
+    // Build the three carousel cards only once. showPlayer() can be
+    // called again after authentication errors or re-entry.
+    if (cardElements.length !== 3) {
+        carousel.replaceChildren();
+        cardElements = [];
+
+        for (let i = 0; i < 3; i++) {
+            const card = document.createElement("div");
+            card.className = "card";
+            card.innerHTML = '<img crossOrigin="anonymous" alt="Album cover">';
+            carousel.appendChild(card);
+            cardElements.push(card);
+        }
     }
+
     updateCarousel();
 }
 
 function updateCarousel() {
-    if (songs.length === 0) return;
+    if (cardElements.length !== 3) return;
+
+    if (songs.length === 0) {
+        cardElements.forEach(card => {
+            card.classList.remove("left", "center", "right");
+            card.querySelector("img").removeAttribute("src");
+            card.onclick = null;
+        });
+        return;
+    }
 
     const leftIndex = (current - 1 + songs.length) % songs.length;
     const centerIndex = current;
@@ -830,10 +848,48 @@ function renderQueue() {
 }
 
 function removeSong(index) {
+    if (!Number.isInteger(index) || index < 0 || index >= songs.length) {
+        return;
+    }
+
+    const removedCurrent = index === current;
     songs.splice(index, 1);
-    if (current >= songs.length) current = Math.max(0, songs.length - 1);
+
+    if (songs.length === 0) {
+        current = 0;
+        currentLyrics = [];
+        currentLyricIndex = -1;
+        clearInterval(lyricInterval);
+        lyricInterval = null;
+        stopProgressPoll();
+
+        titleEl.textContent = "No song selected";
+        artistEl.textContent = "Search for a song to begin";
+        cover.removeAttribute("src");
+        icon.classList.remove("fa-pause");
+        icon.classList.add("fa-play");
+        isPlaying = false;
+
+        updateCarousel();
+        renderQueue();
+        return;
+    }
+
+    // Keep the same track selected when removing a track before it.
+    if (index < current) {
+        current -= 1;
+    } else if (removedCurrent) {
+        // Select the item that moved into this index, or the new last item.
+        current = Math.min(index, songs.length - 1);
+    }
+
     updateCarousel();
     renderQueue();
+
+    // If the active track was removed, switch playback to the replacement.
+    if (removedCurrent) {
+        loadSong();
+    }
 }
 
 function selectSong(index) {
